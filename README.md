@@ -9,6 +9,9 @@ hbsprint is great, however there's a few bugs, so I decided to write my own "vis
 - [hudbars](https://repo.or.cz/w/minetest_hudbars.git) (optional, but strongly recommended. You won't have a hud indicator without it)
 - [hbhunger](https://repo.or.cz/w/minetest_hbhunger.git) (optional)
 
+## Conficts
+Conflicts with hbsprint
+
 ## How to use
 Hold "special" key to sprint (by default it's assigned to E).  
 While sprinting, your stamina will decrease, until it hits 0 and you'll no longer be able to sprint.  
@@ -50,15 +53,22 @@ Spawn particles under sprinting players
 ```
 
 ## Integration with other mods
-Mod provides a public list, sprint_lite.player_info, which holds information of every connected player and their sprint-related variables, as key-value pairs, where key is player's name:
+Mod provides two public functions:
+
 ```
-{ref, --Reference to the player object
-stamina, --float, actual stamina of the player. Can be altered freely.
-previous_stamina, --float, internal field for hudbars updating. Not supposed to be changed.
-sprinting, --bool, status variable, if player is sprinting or not. Not supposed to be changed.
-grounded, --bool, variable, indicating if player is standing on the ground. Not supposed to be changed.
-}
+sprint_lite.set_stamina(name, amount, add)
+name - string, name of the player
+amount - float, amount of stamina to add/set (can be negative if "add" is true, can't be otherwise)
+add - bool, should "amount" be added or set
+
+function returns new stamina amount of the player, returns false if failed to set stamina
+
+sprint_lite.get_stamina(name)
+name - string, name of the player
+
+function returns amount of stamina of the player, returns false if failed
 ```
+
 
 ## License
 All code is licensed under GPLv3 [link to the license](https://www.gnu.org/licenses/gpl-3.0.en.html)  

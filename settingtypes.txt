@@ -8,4 +8,4 @@ sprint_lite_stamina_drain (Amount of stamina to drain per step) float 0.5
 sprint_lite_stamina_regen (Amount of stamina to regenerate per step, when not running) float 0.1
 sprint_lite_stamina_threshold (Amount of stamina below which you can't start running) float 8
 sprint_lite_spawn_particles (Spawn particles under sprinting players) bool true
-
+sprint_lite_respawn_stamina (Amount of stamina players have when they respawn) float 5.0
