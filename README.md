@@ -2,6 +2,8 @@
 Configurable and easy-to use sprinting mod that supports hudbars and hbhunger. Designed after [hbsprint](https://github.com/minetest-mods/hbsprint/) by Tacotexmex.  
 hbsprint is great, however there's a few bugs, so I decided to write my own "vision" of this mod.
 
+![Screenshot](screenshot.png)
+
 ## Requirements
 
 - Minetest 5.0.0 (Wasn't tested on previous versions but might work)
