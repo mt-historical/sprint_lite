@@ -9,3 +9,4 @@ sprint_lite_stamina_regen (Amount of stamina to regenerate per step, when not ru
 sprint_lite_stamina_threshold (Amount of stamina below which you can't start running) float 8
 sprint_lite_spawn_particles (Spawn particles under sprinting players) bool true
 sprint_lite_respawn_stamina (Amount of stamina players have when they respawn) float 5.0
+sprint_lite_require_ground (Require ground to run) bool false

@@ -2,17 +2,18 @@ sprint_lite = {}
 local player_info = {}
 
 --Get settingtypes
-local max_stamina = minetest.settings:get("sprint_lite_max_stamina") or 20
-local speed_multiplier = minetest.settings:get("sprint_lite_speed_multiplier") or 1.75
-local jump_multiplier = minetest.settings:get("sprint_lite_jump_multiplier") or 1.25
-local step_interval = minetest.settings:get("sprint_lite_step_interval") or 0.15
-local drain_hunger = minetest.settings:get("sprint_lite_drain_hunger") ~= false
-local drain_hunger_amount = minetest.settings:get("sprint_lite_hunger_amount") or 0.03
-local stamina_drain = minetest.settings:get("sprint_lite_stamina_drain") or 0.5
-local stamina_regen = minetest.settings:get("sprint_lite_stamina_regen") or 0.1
-local stamina_threshold = minetest.settings:get("sprint_lite_stamina_threshold") or 8
-local spawn_particles = minetest.settings:get("sprint_lite_spawn_particles") ~= false
-local respawn_stamina = minetest.settings:get("sprint_lite_respawn_stamina") or max_stamina/4
+local max_stamina = tonumber(minetest.settings:get("sprint_lite_max_stamina")) or 20
+local speed_multiplier = tonumber(minetest.settings:get("sprint_lite_speed_multiplier")) or 1.75
+local jump_multiplier = tonumber(minetest.settings:get("sprint_lite_jump_multiplier")) or 1.25
+local step_interval = tonumber(minetest.settings:get("sprint_lite_step_interval")) or 0.15
+local drain_hunger = minetest.settings:get_bool("sprint_lite_drain_hunger", false)
+local drain_hunger_amount = tonumber(minetest.settings:get("sprint_lite_hunger_amount")) or 0.03
+local stamina_drain = tonumber(minetest.settings:get("sprint_lite_stamina_drain")) or 0.5
+local stamina_regen = tonumber(minetest.settings:get("sprint_lite_stamina_regen")) or 0.1
+local stamina_threshold = tonumber(minetest.settings:get("sprint_lite_stamina_threshold")) or 8
+local spawn_particles = minetest.settings:get_bool("sprint_lite_spawn_particles", true)
+local respawn_stamina = tonumber(minetest.settings:get("sprint_lite_respawn_stamina")) or max_stamina/4
+local require_ground = minetest.settings:get_bool("sprint_lite_require_ground", false)
 local hudbars_enabled = false
 
 --API functions
@@ -105,14 +106,16 @@ minetest.register_globalstep(function(dtime)
         local keys = playerstats.ref:get_player_control()
         local node = minetest.get_node_or_nil({x = pos.x, y = pos.y - 0.5, z = pos.z})
 
-        if node and (minetest.registered_nodes[node.name].walkable or minetest.registered_nodes[node.name].liquidtype ~= "none") then
+        if node and minetest.registered_nodes[node.name] and
+        (minetest.registered_nodes[node.name].walkable or minetest.registered_nodes[node.name].liquidtype ~= "none") then
             playerstats.grounded = true
         else
             playerstats.grounded = false
         end
 
+        print(require_ground, playerstats.grounded, not require_ground)
         if keys.aux1 and keys.up and not keys.left and not keys.right and not keys.down and not keys.sneak then
-            if playerstats.grounded and
+            if ((require_ground and playerstats.grounded) or not require_ground) and
             ((not playerstats.sprinting and playerstats.stamina > stamina_threshold) or (playerstats.sprinting and playerstats.stamina > 0)) and
             playerstats.ref:get_hp() > 0 then
                 if not playerstats.sprinting then
@@ -147,15 +150,22 @@ minetest.register_globalstep(function(dtime)
             end
 
             if spawn_particles then
-                local texture = minetest.registered_nodes[node.name].tiles[1]
-                if not texture or texture and type(texture) ~= "string" then
-                    texture = "tnt_smoke.png"
-                end
-                local glow = minetest.registered_nodes[node.name].light_source or 0
+
+                local texture = "tnt_smoke.png"
+                local glow = 0
                 local acceleration = {x = 0, y = -9.8, z = 0}
-                if minetest.registered_nodes[node.name].liquidtype ~= "none" then
-                    acceleration = {x = 0, y = 0, z = 0}
+
+                if playerstats.grounded and minetest.registered_nodes[node.name] then
+                    if minetest.registered_nodes[node.name].tiles and
+                    type(minetest.registered_nodes[node.name].tiles[1]) == "string" then
+                        texture = minetest.registered_nodes[node.name].tiles[1]
+                    end
+                    if minetest.registered_nodes[node.name].liquidtype ~= "none" then
+                        acceleration = {x = 0, y = 0, z = 0}
+                    end
+                    glow = minetest.registered_nodes[node.name].light_source or 0
                 end
+
                 minetest.add_particlespawner({
                     amount = math.random(4, 8),
                     time = 0.05,

@@ -52,6 +52,9 @@ Amount of stamina below which you can't start running
 
 sprint_lite_spawn_particles = true
 Spawn particles under sprinting players
+
+sprint_lite_require_ground = false
+Require ground to run
 ```
 
 ## Integration with other mods
