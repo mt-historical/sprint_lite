@@ -194,7 +194,17 @@ minetest.register_globalstep(function(dtime)
 
         if playerstats.stamina ~= playerstats.previous_stamina then
             playerstats.previous_stamina = playerstats.stamina
-            if hudbars_enabled then hb.change_hudbar(playerstats.ref, "stamina", playerstats.stamina) end
+            if hudbars_enabled then
+                local new_bar = "sprint_lite_bar.png"
+                local new_icon = "sprint_lite_icon.png"
+
+                if playerstats.stamina < stamina_threshold then
+                    new_bar = "sprint_lite_bar_weak.png"
+                    new_icon = "sprint_lite_icon_weak.png"
+                end
+
+                hb.change_hudbar(playerstats.ref, "stamina", playerstats.stamina, nil, new_icon, nil, new_bar)
+            end
         end
 
     end
