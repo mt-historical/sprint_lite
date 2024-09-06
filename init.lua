@@ -15,6 +15,7 @@ local spawn_particles = minetest.settings:get_bool("sprint_lite_spawn_particles"
 local respawn_stamina = tonumber(minetest.settings:get("sprint_lite_respawn_stamina")) or max_stamina/4
 local require_ground = minetest.settings:get_bool("sprint_lite_require_ground", false)
 local hudbars_enabled = false
+local S = minetest.get_translator(minetest.get_current_modname())
 
 --API functions
 sprint_lite.set_stamina = function(name, amount, add)
@@ -58,7 +59,7 @@ if minetest.get_modpath("hudbars") then
     hb.register_hudbar(
         "stamina",
         0xFFFFFF,
-        "Stamina",
+        S("Stamina"),
         {
             bar = "sprint_lite_bar.png",
             icon = "sprint_lite_icon.png",
@@ -194,7 +195,17 @@ minetest.register_globalstep(function(dtime)
 
         if playerstats.stamina ~= playerstats.previous_stamina then
             playerstats.previous_stamina = playerstats.stamina
-            if hudbars_enabled then hb.change_hudbar(playerstats.ref, "stamina", playerstats.stamina) end
+            if hudbars_enabled then
+                local new_bar = "sprint_lite_bar.png^[colorize:#0c9a32:200"
+                local new_icon = "sprint_lite_icon.png^[colorize:#11ea48:100"
+
+                if playerstats.stamina < stamina_threshold then
+                    new_bar = "sprint_lite_bar.png^[colorize:#b34102:200"
+                    new_icon = "sprint_lite_icon.png^[colorize:#ff5b03:100"
+                end
+
+                hb.change_hudbar(playerstats.ref, "stamina", playerstats.stamina, nil, new_icon, nil, new_bar)
+            end
         end
 
     end
