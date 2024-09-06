@@ -196,11 +196,11 @@ minetest.register_globalstep(function(dtime)
         if playerstats.stamina ~= playerstats.previous_stamina then
             playerstats.previous_stamina = playerstats.stamina
             if hudbars_enabled then
-                local new_bar = "sprint_lite_bar.png^[colorize:#0c9a32"
+                local new_bar = "sprint_lite_bar.png^[colorize:#0c9a32:200"
                 local new_icon = "sprint_lite_icon.png^[colorize:#11ea48:100"
 
                 if playerstats.stamina < stamina_threshold then
-                    new_bar = "sprint_lite_bar.png^[colorize:#b34102"
+                    new_bar = "sprint_lite_bar.png^[colorize:#b34102:200"
                     new_icon = "sprint_lite_icon.png^[colorize:#ff5b03:100"
                 end
 
