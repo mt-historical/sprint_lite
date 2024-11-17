@@ -125,7 +125,7 @@ minetest.register_globalstep(function(dtime)
         for _,snode in pairs(snodes) do
         
             if snode and minetest.registered_nodes[snode.name] and minetest.registered_nodes[snode.name].climbable then
-                climbable = climbable or true
+                climbable = true
             end
         
         end
