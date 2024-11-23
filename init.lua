@@ -114,20 +114,23 @@ minetest.register_globalstep(function(dtime)
             playerstats.grounded = false
         end
         
-        local snodes = {
-                        n = minetest.get_node_or_nil({x = pos.x, y = pos.y, z = pos.z + 0.5}),
-                        s = minetest.get_node_or_nil({x = pos.x, y = pos.y, z = pos.z - 0.5}),
-                        w = minetest.get_node_or_nil({x = pos.x - 0.5, y = pos.y, z = pos.z}),
-                        e = minetest.get_node_or_nil({x = pos.x + 0.5, y = pos.y, z = pos.z}),
-                        }
         local climbable = false
         
-        for _,snode in pairs(snodes) do
-        
-            if snode and minetest.registered_nodes[snode.name] and minetest.registered_nodes[snode.name].climbable then
-                climbable = true
+        if (keys.aux1 and (keys.sneak or keys.jump)) then
+            local snodes = {
+                            n = minetest.get_node_or_nil({x = pos.x, y = pos.y, z = pos.z + 0.5}),
+                            s = minetest.get_node_or_nil({x = pos.x, y = pos.y, z = pos.z - 0.5}),
+                            w = minetest.get_node_or_nil({x = pos.x - 0.5, y = pos.y, z = pos.z}),
+                            e = minetest.get_node_or_nil({x = pos.x + 0.5, y = pos.y, z = pos.z}),
+                            }
+            
+            for _,snode in pairs(snodes) do
+            
+                if snode and minetest.registered_nodes[snode.name] and minetest.registered_nodes[snode.name].climbable then
+                    climbable = true
+                end
+            
             end
-        
         end
 
         print(require_ground, playerstats.grounded, not require_ground)
