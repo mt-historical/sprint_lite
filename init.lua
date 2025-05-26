@@ -133,7 +133,6 @@ minetest.register_globalstep(function(dtime)
             end
         end
 
-        print(require_ground, playerstats.grounded, not require_ground)
         if (keys.aux1 and keys.up and not keys.left and not keys.right and not keys.down and not keys.sneak) or (climbable and ((keys.aux1 and keys.sneak) or (keys.aux1 and keys.jump))) then
             if ((require_ground and playerstats.grounded) or not require_ground) and
             ((not playerstats.sprinting and playerstats.stamina > stamina_threshold) or (playerstats.sprinting and playerstats.stamina > 0)) and
