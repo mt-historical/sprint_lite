@@ -2,7 +2,7 @@ sprint_lite_max_stamina (Maximum stamina of every player) float 20.0
 sprint_lite_speed_multiplier (Speed multiplier when sprinting) float 1.75
 sprint_lite_jump_multiplier (Jump multiplier when sprinting) float 1.25
 sprint_lite_step_interval (Server step interval in seconds, when performing sprint-related checks) float 0.15
-sprint_lite_drain_hunger (Sprinting drains hunger, if hbhunger is installed) bool true
+sprint_lite_drain_hunger (Sprinting drains hunger, if hbhunger is installed) bool false
 sprint_lite_hunger_amount (Amount of hunger to drain per step) float 0.03
 sprint_lite_stamina_drain (Amount of stamina to drain per step) float 0.5
 sprint_lite_stamina_regen (Amount of stamina to regenerate per step, when not running) float 0.1
